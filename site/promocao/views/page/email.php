@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang= "pt-br">
     <head>
         <style>
 
@@ -9,7 +9,7 @@
             }
             #topB{
                 height: 125px;
-                background-image: url(" ../../images/top_bg.png");
+                background-image: url(" http://www.casadosbanners.com.br/images/top_bg.png");
                 padding-top: 15px;
                 padding-left: 15px;
             }
@@ -42,11 +42,7 @@
                 <p>
                     In elementis mé pra quem é amistosis quis leo. Paisis, filhis, espiritis 
                     santis. Casamentiss faiz malandris se pirulitá. 
-                    
-                <form action="http://www.casadosbanners.com.br/index.php?c=capturaEmail&a=emailValido" method="POST">
-                    <input type="hidden" value=".$email." name="email"/>
-                    <input type="submit" value="Receber eBook" />
-                </form><a href="promocao"> Link link </a> 
+                    <a href="http://www.casadosbanners.com.br/index.php?c=capturaEmail&a=emailValido&v='.$id.'"> Link link </a>  
                     Praesent vel viverra nisi. Mauris aliquet nunc non turpis scelerisque, eget.</p>
                 <br>
                 <p> 

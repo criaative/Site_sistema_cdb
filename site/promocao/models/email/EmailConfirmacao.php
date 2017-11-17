@@ -74,7 +74,7 @@ class EmailConfirmacao {
                 <p>
                     In elementis mé pra quem é amistosis quis leo. Paisis, filhis, espiritis 
                     santis. Casamentiss faiz malandris se pirulitá. 
-                    <a href="http://www.casadosbanners.com.br/index.php?c=capturaEmail&a=emailValido&v='.$id.'"> Link link </a>  
+                    <a href="http://www.casadosbanners.com.br/index.php?c=capturaEmail&a=emailValido&v='.$id.'" target="_blank"> Link link </a>  
                     Praesent vel viverra nisi. Mauris aliquet nunc non turpis scelerisque, eget.</p>
                 <br>
                 <p> 

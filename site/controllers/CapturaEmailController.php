@@ -47,6 +47,9 @@ class CapturaEmailController {
             $this->capEmail->capturaEmail($email);
             $this->capEmail->setStatus($id);
         }
+        
+        header("Location: Promocao&a=eMarketing&e=1");
+        
     }
 
 }
