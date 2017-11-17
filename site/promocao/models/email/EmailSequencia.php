@@ -44,24 +44,32 @@ class EmailSequencia {
     }
 
     public function sequenciaEmail($enviados) {
-        
+
         $emails = $this->getSequenciaEmail();
         foreach ($emails as $v) {
+            if (($enviados['id_ordem'] + 1) == $v['ordem']) {
 
-        }
 
 
-        $quebra_linha = "\n";
-        $emailsender = 'banners@casadosbanners.com.br';
-        $emaildestinatario = //$email;
+
+
+
+
+
+                $this->getEmail($enviados['id_email_clientes']);
+
+                $quebra_linha = "\n";
+                $emailsender = 'banners@casadosbanners.com.br';
+                $emaildestinatario = $this->getEmail($enviados['id_email_clientes']);
+
 
 
                 $assunto = "email teste";
 
 
-        $html = '
+                $html = '
                 <!DOCTYPE html>
-<html lang= "pt-br">
+                    <html lang= "pt-br">
     <head>
         <style>
 
@@ -90,16 +98,16 @@ class EmailSequencia {
                 <img src="http://www.casadosbanners.com.br/images/logo.png" width="25%">
 
                 <div id="topB">
-                    <h2>' .// $emails['descricao'] . 
-                '
+                    <h2>' . $v['descricao'] .
+                        '
                 </h2>
                     <span>Primeiro email</span>
                 </div>
             </div>
             <div id="main">
 
-                <p> ' .// $emails['texto_email'] . 
-                '</p>
+                <p> ' . $v['texto_email'] .
+                        '</p>
 
             </div>
             <div id="footer">
@@ -110,33 +118,56 @@ class EmailSequencia {
 </html>
 
                 ';
-        // echo $html;
 
-        $enviados = $this->getEnviados();
-        echo'<pre><hr>';
-        print_r($enviados);
-        echo'<hr></pre>';
+                //echo $html;
 
 
 
-        /*
 
-          $mail = new Swift_Message();
-          $mail->setSender('projeto@casadosbanners.com.br'); // enviando
-          $mail->setTo($ems['email']); // recebendo
-          $mail->setSubject($assunto);
-          $mail->setBody($html, 'text/html');
 
-          $server = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
-          $server->setUsername('projeto@casadosbanners.com.br');
-          $server->setPassword('cdb123456');
 
-          $carteiro = new Swift_Mailer($server);
-          $carteiro->send($mail);
-         */
+
+
+                
+                  $mail = new Swift_Message();
+                  $mail->setSender('projeto@casadosbanners.com.br'); // enviando
+                  $mail->setTo($emaildestinatario[0]['email']); // recebendo
+                  $mail->setSubject($assunto);
+                  $mail->setBody($html, 'text/html');
+
+                  $server = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
+                  $server->setUsername('projeto@casadosbanners.com.br');
+                  $server->setPassword('cdb123456');
+
+                  $carteiro = new Swift_Mailer($server);
+                  $carteiro->send($mail); 
+                  
+                $ordem = $enviados['id_ordem'] + 1;
+                $id = $enviados['id_email_clientes'];
+
+                $this->addEnviados($id, $ordem);
+            }
+        }
     }
 
-    function getEnviados() {
+    public function addEnviados($id, $ordem) {
+
+
+
+
+        $sql = "INSERT INTO sistemacdb2.aw_email_enviados 
+             (id_email_clientes, id_ordem, data_add, data_envio, status) 
+             VALUES 
+             (:id, :ordem, :data, :data, '1')";
+
+        $captureEmail[':id'] = $id;
+        $captureEmail[':ordem'] = $ordem;
+        $captureEmail[':data'] = date("Y-m-d H:i:s");
+        $capture = $this->con->pdo()->prepare($sql);
+        $capture->execute($captureEmail);
+    }
+
+    public function getEnviados() {
 
         $sql = 'SELECT * FROM aw_email_enviados where status=1';
 
