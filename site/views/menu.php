@@ -35,9 +35,10 @@
                         <!-- <li class="active"><a href="index.html">Home</a></li>
                       <li class="dropdown"><a href="#">Pages <i class="fa fa-angle-down"></i></a>
                           <ul role="menu" class="sub-menu">
-                              <li><a href="aboutus.html">About</a></li>-->
+                              <li><a href="aboutus.html">About</a></li>
                               <li><a href="index.php?c=site&a=promocao">Imobiliárias</a></li>
                               <li><a href="index.php?c=site&a=blog">blog</a></li>
+                        -->
                               <li><a href="http://www.casadosbanners.com.br">Loja</a></li>
                               <li><a href="index.php?c=site&a=contato">Contato</a></li>
                              <!--   <li><a href="service.html">Services</a></li>

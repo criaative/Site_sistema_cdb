@@ -41,8 +41,8 @@ class EmailModel {
         $this->enviados = $id;
 
         $sql = 'INSERT INTO aw_email_enviados 
-            (id_email_clientes, data_add,status) VALUES 
-            (:email,"' . $this->dataAdd . '",1)';
+            (id_email_clientes,status) VALUES 
+            (:email,1)';
 
         $captureEmail[':email'] = $this->enviados;
         $capture = $this->con->pdo()->prepare($sql);
@@ -75,8 +75,6 @@ class EmailModel {
         $this->sequencia->enviarEmails();
         
         
-   
-        
     }
 
     public function getEmail($id) {
@@ -84,6 +82,19 @@ class EmailModel {
         $sql = 'SELECT * FROM aw_email_clientes where id=:id; AND status=1';
 
         $captureEmail[':id'] = $id;
+        $capture = $this->con->pdo()->prepare($sql);
+        $capture->execute($captureEmail);
+        $dados = $capture->fetchAll(PDO::FETCH_ASSOC);
+
+        $this->email = $dados;
+
+        return $dados;
+    }
+    public function getEmails($email) {
+        
+        $sql = 'SELECT * FROM aw_email_clientes where email=:email';
+
+        $captureEmail[':email'] = $email;
         $capture = $this->con->pdo()->prepare($sql);
         $capture->execute($captureEmail);
         $dados = $capture->fetchAll(PDO::FETCH_ASSOC);
@@ -116,5 +127,24 @@ class EmailModel {
     function setDataAdd($dataAdd) {
         $this->dataAdd = $dataAdd;
     }
+    
+    function naoReceberEmail($email){
+        
+       
+        
+        $id=$this->getEmails($email);
+        
+        
+        
+        $sql = "UPDATE aw_email_clientes SET status='0', data_edit='" . $this->dataAdd . "' WHERE id=" . $id[0]['id'];
+        $capture = $this->con->pdo()->prepare($sql);
+        $capture->execute();
+        
+         $sqlE = "UPDATE aw_email_enviados SET status='0' WHERE id_email_clientes=" . $id[0]['id'];
+        $captures = $this->con->pdo()->prepare($sqlE);
+        $captures->execute();
+    }
+    
+    
 
 }

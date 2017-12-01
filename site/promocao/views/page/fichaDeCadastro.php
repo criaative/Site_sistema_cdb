@@ -23,7 +23,7 @@ require_once 'site/views/header.php';
                         <strong style="font-size: 25px; margin-bottom: 50px; color: #fff;">"Resolva em definitivo seus problemas com produtos de divulgação imobiliária "</strong>
                     </div>
 
-                    <form  method="post" action="http://www.casadosbanners.com.br/index.php?c=capturaEmail&a=capturaEmail">
+                    <form  method="post" action="index.php?c=capturaEmail&a=capturaEmail">
 
                         <div class="form-group">
                             <input type="email" name="email" class="form-control" required="required" placeholder="Digite Seu melhor email">

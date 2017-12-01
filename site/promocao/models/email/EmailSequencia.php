@@ -23,7 +23,7 @@ class EmailSequencia {
 
     public function getSequenciaEmail() {
 
-        $sql = 'SELECT * FROM aw_email_relacionamento';
+        $sql = 'SELECT * FROM aw_email_relacionamento where status=1';
 
 
         $capture = $this->con->pdo()->prepare($sql);
@@ -36,6 +36,7 @@ class EmailSequencia {
     }
 
     public function enviarEmails() {
+     
         $enviados = $this->getEnviados();
         foreach ($enviados as $v) {
 
@@ -45,14 +46,11 @@ class EmailSequencia {
 
     public function sequenciaEmail($enviados) {
 
+        set_time_limit(120);
+        
         $emails = $this->getSequenciaEmail();
         foreach ($emails as $v) {
-            if (($enviados['id_ordem'] + 1) == $v['ordem']) {
-
-
-
-
-
+            if (($enviados['order'] + 1) == $v['ordem']) {
 
 
 
@@ -64,89 +62,100 @@ class EmailSequencia {
 
 
 
-                $assunto = "email teste";
+                $assunto = $v['assunto'];
 
 
-                $html = '
-                <!DOCTYPE html>
+                $html = '<!DOCTYPE html>
                     <html lang= "pt-br">
-    <head>
-        <style>
+                        <head>
+                            <meta charset="utf-8">
+                            <style>
+                                #wrap{
+                                    margin: auto;
+                                    max-width: 750px;
+                                }
+                                #topB{
+                                    height: 125px;
+                                    background-image: url(" http://www.casadosbanners.com.br/images/top_bg.png");
+                                    padding-top: 15px;
+                                    padding-left: 15px;
+                                }
+                                #main{
+                                    margin: auto;
+                                    max-width: 650px;
+                                    text-align: center;
+                                }
+                                p{
+                                    font-size: 20px;
+                                    text-align: left;
+                                }
+                                 #footer {
 
-            #wrap{
-                margin: auto;
-                max-width: 750px;
-            }
-            #topB{
-                height: 125px;
-                background-image: url(" http://www.casadosbanners.com.br/images/top_bg.png");
-                padding-top: 15px;
-                padding-left: 15px;
-            }
-            #main{
-                margin: auto;
-                max-width: 650px;
-                text-align: center;
-            }
+                                    padding: 50px;
+                                    font-size: 14px;
+                                }
 
-        </style>
-    </head>
-
-    <body>
-        <div id="wrap">
-            <div id="top">
-                <img src="http://www.casadosbanners.com.br/images/logo.png" width="25%">
-
-                <div id="topB">
-                    <h2>' . $v['descricao'] .
-                        '
-                </h2>
-                    <span>Primeiro email</span>
-                </div>
-            </div>
-            <div id="main">
-
-                <p> ' . $v['texto_email'] .
-                        '</p>
-
-            </div>
-            <div id="footer">
-
-            </div>
-        </div>
-    </body>
-</html>
+                            </style>
+                        </head>
+                        <body>
+                            <div id="wrap">
+                                <div id="top">
+                                    <img src="http://www.casadosbanners.com.br/images/logo.png" width="25%">
+                                     <div id="topB">
+                                        <h2>'. $v['titulo'] .'</h2>
+                                        <span>'. $v['sub_titulo'] .'</span>
+                                      </div>
+                                </div>
+                                <div id="main">
+                                    '. $v['texto_email'] . '
+                                </div>
+                                <div id="footer">
+                                    <span>Atenção: Está Mensagem é automática, Não E Necessário Responde-la. 
+                                        Se Você Não deseja Mais Receber NOSSOS e-mails, cancele SUA Inscrição <a href="http://www.casadosbanners.com.br/Promocao&a=naoReceberEmail">Clique aqui</a> .</span>
+                                </div>
+                            </div>
+                        </body>
+                    </html>
 
                 ';
 
-                //echo $html;
+               // echo $html;
 
-
-
-
-
-
-
-
+$emailsender ='mkt@casadosbanners.com.br';
                 
-                  $mail = new Swift_Message();
-                  $mail->setSender('projeto@casadosbanners.com.br'); // enviando
-                  $mail->setTo($emaildestinatario[0]['email']); // recebendo
-                  $mail->setSubject($assunto);
-                  $mail->setBody($html, 'text/html');
+                $headers = "MIME-Version: 1.0" . $quebra_linha;
+              $headers .= "Content-type: text/html; charset=utf-8" . $quebra_linha;
+              $headers .= "From: " . $emailsender . $quebra_linha;
+              /*
+              $headers .= "Return-Path ".$emailsender.$quebra_linha;
+              $headers .= "Reply-to: ".$emailsender .$quebra_linha;
+*/
 
-                  $server = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
-                  $server->setUsername('projeto@casadosbanners.com.br');
-                  $server->setPassword('cdb123456');
+              mail($emaildestinatario[0]['email'], $assunto, $html, $headers, "-r" . $emailsender);
+                
 
-                  $carteiro = new Swift_Mailer($server);
-                  $carteiro->send($mail); 
-                  
-                $ordem = $enviados['id_ordem'] + 1;
+              /*  $mail = new Swift_Message();
+                $mail->setSender('banners@casadosbanners.com.br'); // enviando
+                $mail->setTo($emaildestinatario[0]['email']); // recebendo
+                $mail->setSubject($assunto);
+                $mail->setBody($html, 'text/html');
+
+                $server = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
+                $server->setUsername('banners@casadosbanners.com.br');
+                $server->setPassword('123456cdb');
+
+                $carteiro = new Swift_Mailer($server);
+                $carteiro->send($mail);*/
+
+                $ordem = $enviados['order'] + 1;
                 $id = $enviados['id_email_clientes'];
 
+
+
                 $this->addEnviados($id, $ordem);
+                
             }
+                
         }
     }
 
@@ -156,9 +165,9 @@ class EmailSequencia {
 
 
         $sql = "INSERT INTO sistemacdb2.aw_email_enviados 
-             (id_email_clientes, id_ordem, data_add, data_envio, status) 
+             (id_email_clientes, id_ordem, data_envio, status) 
              VALUES 
-             (:id, :ordem, :data, :data, '1')";
+             (:id, :ordem, :data, '1')";
 
         $captureEmail[':id'] = $id;
         $captureEmail[':ordem'] = $ordem;
@@ -169,7 +178,7 @@ class EmailSequencia {
 
     public function getEnviados() {
 
-        $sql = 'SELECT * FROM aw_email_enviados where status=1';
+        $sql = "SELECT *, max(id_ordem) AS 'order' FROM aw_email_enviados where status=1 group by id_email_clientes ";
 
 
         $capture = $this->con->pdo()->prepare($sql);
@@ -182,7 +191,7 @@ class EmailSequencia {
 
     public function getEmail($id) {
 
-        $sql = 'SELECT * FROM aw_email_clientes where id=:id; AND status=1';
+        $sql = 'SELECT * FROM aw_email_clientes where id=:id AND status=1';
 
         $captureEmail[':id'] = $id;
         $capture = $this->con->pdo()->prepare($sql);

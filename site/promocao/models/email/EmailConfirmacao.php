@@ -60,8 +60,8 @@ class EmailConfirmacao {
                 <img src="http://www.casadosbanners.com.br/images/logo.png" width="25%">
 
                 <div id="topB">
-                    <h2>Casa dos Banners</h2>
-                    <span>Primeiro email</span>
+                    <h2>Olá aqui é o Kiko </h2>
+                    <span>gestor da Casa dos Banners </span>
                 </div>
             </div>
             <div id="main">
@@ -74,7 +74,7 @@ class EmailConfirmacao {
                 <p>
                     In elementis mé pra quem é amistosis quis leo. Paisis, filhis, espiritis 
                     santis. Casamentiss faiz malandris se pirulitá. 
-                    <a href="http://www.casadosbanners.com.br/index.php?c=capturaEmail&a=emailValido&v='.$id.'" target="_blank"> Link link </a>  
+                    <a href="http://www.casadosbanners.com.br/index.php?c=capturaEmail&a=emailValido&v='.$id.'"> Link link </a>  
                     Praesent vel viverra nisi. Mauris aliquet nunc non turpis scelerisque, eget.</p>
                 <br>
                 <p> 
@@ -103,12 +103,13 @@ class EmailConfirmacao {
 
                 ';
 
+          //  echo $html;
             
-            
+         
            
 
               $mail = new  Swift_Message();
-              $mail->setSender('projeto@casadosbanners.com.br'); // enviando
+              $mail->setSender('banners@casadosbanners.com.br'); // enviando
               $mail->setTo($emaildestinatario); // recebendo
               $mail->setSubject($assunto);
               $mail->setBody($html, 'text/html');

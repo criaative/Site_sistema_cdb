@@ -21,10 +21,18 @@ class PromocaoController {
 
     public function index() {
 
-        $this->Produtos();
+        $this->produtos();
     }
 
-    public function Produtos() {
+    public function produtos() {
+
+        include_once 'site/promocao/views/page/produtos.php';
+    }
+    public function carrinho() {
+
+        include_once 'site/promocao/views/page/carrinho.php';
+    }
+    public function fichaDeCadastro() {
 
         include_once 'site/promocao/views/page/fichaDeCadastro.php';
     }
@@ -35,16 +43,25 @@ class PromocaoController {
     }
 
     public function emailSequencial() {
-        $enviar = 1;
 
-        
-        
-        if ($enviar === 1) {
+
+        $enviar = $_GET['enviar'];
+        if (isset($enviar) && $enviar === "agora") {
 
             $this->emailModel->enviarEmailsSequencia();
-        }else{
+        } else {
             return;
         }
+    }
+
+    public function naoReceberEmail() {
+        include_once 'site/promocao/views/page/cancelarEmail.php';
+    }
+
+    public function cancelarEnvioDeEmail() {
+
+
+        $this->emailModel->naoReceberEmail($email);
     }
 
 }

@@ -1,4 +1,5 @@
- <!--/#home-slider-->
+
+<!--/#home-slider-->
  
  <section id="services">
     <div class="container">
